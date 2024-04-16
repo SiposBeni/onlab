@@ -5,6 +5,28 @@ const router = express.Router();
 
 module.exports = router;
 
+
+router.get('/', (req, res)=>{
+    res.render('home', {text:"Zsófi"});
+})
+router.get('/login', (req, res)=>{
+    res.render('login');
+})
+router.get('/register', (req, res)=>{
+    res.render('register');
+})
+
+router.post('/login', (req, res)=>{
+    console.log(req.body);
+    res.redirect('back');
+})
+router.post('/register', (req, res)=>{
+    console.log(req.body);
+    res.redirect('back');
+})
+
+
+
 // post new user
 router.post('/post', async (req, res) => {
     // console.log("Inside function")
