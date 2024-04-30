@@ -3,7 +3,7 @@ const express = require("express");
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const routes = require('./routes/routes');
-
+const authRouter = require('./routes/auth');
 
 const uri = "mongodb+srv://webserver:asdf1234@onlab.k1cnug0.mongodb.net/?retryWrites=true&w=majority&appName=Onlab";
 
@@ -42,3 +42,4 @@ const client = new MongoClient(uri, {
 
 
   app.use('/', routes);
+  app.use('/', authRouter);

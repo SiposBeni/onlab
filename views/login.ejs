@@ -36,27 +36,17 @@
     <div class="row justify-content-center vertical-center">
       <div class="col-md-5 col-lg-5">
         <div class="p-4 border border-dark rounded shadow-lg">
-          <h2 class="text-center">
-            Please sign in
-          </h2>
-          <form action="/login" method="POST">
-            <div class="mb-3">
-              <label for="email" class="form-label mb-0">Email</label>
-              <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-4">
-              <label for="password" class="form-label mb-0">Password</label>
-              <input type="password" class="form-control" id="password">
-            </div>
-            <div class="text-center">
-              <button type="submit" class="btn btn-light border border-dark">Sign in</button>
-              <div class="my-1">
-                or
-              </div>
-              <a href="/register">
-                Register
-              </a>
-            </div>
+          <h1>Sign in</h1>
+          <form action="/login/password" method="post">
+            <section>
+              <label for="username">Username</label>
+              <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+            </section>
+            <section>
+              <label for="current-password">Password</label>
+              <input id="current-password" name="password" type="password" autocomplete="current-password" required>
+            </section>
+            <button type="submit">Sign in</button>
           </form>
         </div>
       </div>
