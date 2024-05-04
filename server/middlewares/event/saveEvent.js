@@ -10,14 +10,14 @@ module.exports = async function saveEvent(req, res, next) {
         description: description,
         difficulty: difficulty,
         totalCost: totalCost,
-        creator: req.user._id // make sure user is attached to req in isAuthenticated middleware
+        creator: req.user._id 
     });
 
     try {
         await newEvent.save();
-        req.newEvent = newEvent; // Pass the new event to the next middleware or route handler if needed
+        req.newEvent = newEvent; 
         next();
     } catch (error) {
-        next(error); // Pass errors to the error-handling middleware
+        next(error);
     }
 }

@@ -9,14 +9,14 @@ const routes = require('./routes/routes');
 const authRouter = require('./routes/auth');
 
 
-// mongoose setup
+/**
+ * Setup mongoose connection
+ */
 const uri = "mongodb+srv://webserver:asdf1234@onlab.k1cnug0.mongodb.net/?retryWrites=true&w=majority&appName=Onlab";
 mongoose.connect(uri)
   .then(() => {
     console.log('Successfully connected to MongoDB.');
-
     app.locals.db = mongoose.connection.db;
-
     app.listen(PORT, () => {
       console.log(`Server listening on ${PORT}`);
     });
@@ -34,6 +34,9 @@ app.use(session({
   saveUninitialized: false
 }));
 
+/**
+ * So all the views can see logged in user
+ */
 app.use((req, res, next) => {
   if (req.session.user) {
     res.locals.user = req.session.user;

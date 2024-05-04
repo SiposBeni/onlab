@@ -9,30 +9,33 @@ const setPageTitle = require('../middlewares/setPageTitle');
 const saveEvent = require('../middlewares/event/saveEvent');
 const config = require('../config');
 
-
+/**
+ * Main routes
+ */
 router.get('/', isAuthenticated, setPageTitle("Home"), (req, res) => {
     res.render("home");
 });
 
-router.get('/own-events', isAuthenticated, setPageTitle("My events"), (req, res) => {
-    res.render('own_events');
+router.get('/event/own', isAuthenticated, setPageTitle("My events"), (req, res) => {
+    res.render('eventOwn');
 })
 
-router.get('/events/:id', isAuthenticated, setPageTitle("Event"), fetchEvent, fetchCreator, (req, res) => {
-    res.render('event', { event: req.event, creator: req.creator});
+router.get('/event/browse', isAuthenticated, setPageTitle("Browse"), async (req, res) => {
+    const events = await EventModel.find({});
+    res.render('browse', { allowedSports: config.allowedSports, events });
 });
 
 router.get('/event/new', isAuthenticated, setPageTitle("New Event"), (req, res) => {
-    res.render('newEvent');
+    res.render('eventNew');
 });
 
 router.post('/event/new', isAuthenticated, setPageTitle("New Event"), saveEvent, (req, res) => {
-    res.redirect('/browse');
+    res.redirect('/event/browse');
 });
 
-router.get('/browse', isAuthenticated, setPageTitle("Browse"), async (req, res) => {
-    const events = await EventModel.find({});
-    res.render('browse', { allowedSports: config.allowedSports, events });
+
+router.get('/event/:id', isAuthenticated, setPageTitle("Event"), fetchEvent, fetchCreator, (req, res) => {
+    res.render('event', { event: req.event, creator: req.creator});
 });
 
 router.get('/profile', isAuthenticated, setPageTitle("Profile"), (req, res) => {

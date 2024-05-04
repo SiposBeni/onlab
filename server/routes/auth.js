@@ -8,6 +8,10 @@ const login = require('../middlewares/user/login');
 const initSession = require('../middlewares/user/session/initSession');
 const logout = require('../middlewares/user/logout');
 
+/**
+ * Routes for authentication related stuff
+ */
+
 router.get('/login', setPageTitle("Login"), function (req, res) {
   res.render('login');
 });

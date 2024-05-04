@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
 const UserModel = require('../../models/user');
 
-
+/**
+ * Checks login credentials
+ */
 module.exports = async function login(req, res, next) {
     const { username, password } = req.body;
     const user = await UserModel.findOne({ name: username });

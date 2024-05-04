@@ -1,5 +1,8 @@
 const UserModel = require('../../models/user');
 
+/**
+ * Gets the event creator from id
+ */
 module.exports = async function fetchCreator(req, res, next) {
     if (!req.event) return next();
     try {

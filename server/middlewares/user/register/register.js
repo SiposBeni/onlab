@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
 const UserModel = require('../../../models/user');
 
-
+/**
+ * Register the new user
+ */
 module.exports = async function register(req, res, next) {
     const { username, password } = req.body;
     const hashedPwd = await bcrypt.hash(password, 10);
@@ -12,7 +14,7 @@ module.exports = async function register(req, res, next) {
   
     try {
       await newUser.save();
-      next();  // Proceed to the next middleware or route handler
+      next();
     } catch (error) {
       res.render("register", { pageTitle: "Register", error: error.message });
     }

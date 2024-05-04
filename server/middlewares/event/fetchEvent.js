@@ -1,6 +1,8 @@
 const EventModel = require('../../models/event');
 
-
+/**
+ * Gets event by id
+ */
 module.exports = async function fetchEvent(req, res, next) {
     try {
         const event = await EventModel.findById(req.params.id);
