@@ -17,16 +17,16 @@ router.get('/', isAuthenticated, setPageTitle("Home"), (req, res) => {
 });
 
 router.get('/event/own', isAuthenticated, setPageTitle("My events"), (req, res) => {
-    res.render('eventOwn');
+    res.render('event/eventOwn');
 })
 
 router.get('/event/browse', isAuthenticated, setPageTitle("Browse"), async (req, res) => {
     const events = await EventModel.find({});
-    res.render('browse', { allowedSports: config.allowedSports, events });
+    res.render('event/browse', { allowedSports: config.allowedSports, events });
 });
 
 router.get('/event/new', isAuthenticated, setPageTitle("New Event"), (req, res) => {
-    res.render('eventNew');
+    res.render('event/eventNew');
 });
 
 router.post('/event/new', isAuthenticated, setPageTitle("New Event"), saveEvent, (req, res) => {
@@ -35,7 +35,7 @@ router.post('/event/new', isAuthenticated, setPageTitle("New Event"), saveEvent,
 
 
 router.get('/event/:id', isAuthenticated, setPageTitle("Event"), fetchEvent, fetchCreator, (req, res) => {
-    res.render('event', { event: req.event, creator: req.creator});
+    res.render('event/event', { event: req.event, creator: req.creator});
 });
 
 router.get('/profile', isAuthenticated, setPageTitle("Profile"), (req, res) => {

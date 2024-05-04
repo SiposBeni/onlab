@@ -1,5 +1,5 @@
-<%- include("partials/head") %>
-<%- include("partials/navbar") %>
+<%- include("../partials/head") %>
+<%- include("../partials/navbar") %>
 
 <main class="mx-5">
   <div class="container mt-5">
@@ -16,7 +16,7 @@
         <form action="/event/new" method="POST">
           <div class="mb-3">
             <label for="date" class="form-label">Date and Time</label>
-            <input type="datetime-local" class="form-control" id="date" name="date" required>
+            <input type="datetime-local" min="<%=Date.now()%>" class="form-control" id="date" name="date" required>
             <small class="form-text text-muted">Required</small>
           </div>
           <div class="mb-3">
@@ -55,4 +55,4 @@
     </div>
   </div>
 </main>
-<%- include("partials/footer") %>
+<%- include("../partials/footer") %>
