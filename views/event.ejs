@@ -1,11 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event</title>
-  </head>
-  <body>
-    <h1>Event <%=2+2%></h1>
-  </body>
-</html>
+<%- include("partials/head") %>
+  <%- include("partials/navbar") %>
+
+    <main class="mx-5">
+      <div class="container mt-5">
+        <div class="row">
+          <h1>Event by <%= creator.name %>
+          </h1>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title">
+                  <% // Sportag neve nagy kezdobetuvel %>
+                  <%= event.sport.charAt(0).toUpperCase() + event.sport.slice(1) %>
+                </h2>
+                <div class="d-flex justify-content-between">
+                  <h5>
+                    <%= event.date.toLocaleString('hu-HU', { year: 'numeric' , month: '2-digit' , day: '2-digit' ,
+                      hour: '2-digit' , minute: '2-digit' }) %>
+                  </h5>
+                  <div class="badge bg-primary p-2">
+                    <%= event.currentPlayers.length %>/<%= event.maxPlayers %> players
+                  </div>
+                </div>
+                <p class="fw-bold">
+                  <%= event.address %>
+                </p>
+                <p>
+                  <%= event.description %><br>
+                    Difficulty: <%= event.difficulty %><br>
+                      Cost: <%= event.totalCost %> HUF (<%= Math.round(event.totalCost / event.maxPlayers) %> HUF / player,
+                          currently <%= event.currentPlayers.length %> players)
+                </p>
+                <div class="d-flex justify-content-end">
+                  <button type="button" class="btn btn-primary">Join the event!</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <%- include("partials/footer") %>

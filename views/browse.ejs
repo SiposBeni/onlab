@@ -1,11 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse</title>
-  </head>
-  <body>
-    <h1>Browse <%=2+2%></h1>
-  </body>
-</html>
+<%- include("partials/head") %>
+  <%- include("partials/navbar") %>
+
+    <main class="mx-5">
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-9">
+            <h1>Browse Events</h1>
+          </div>
+          <div class="col-3 my-auto">
+            <a class="btn btn-primary" href="/event/new">New event</a>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="accordion" id="accordion">
+            <% allowedSports.forEach((sport, index)=> { %>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+
+                  <%// accordion item letrehozasa allowedsports szerint %>
+                  <button class="accordion-button <%= index === 0 ? '' : 'collapsed' %>" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#accordion<%= index %>"
+                    aria-expanded="<%= index === 0 ? 'true' : 'false' %>" aria-controls="accordion<%= index %>">
+                    <h4><strong>
+                        <%= sport.charAt(0).toUpperCase() + sport.slice(1) %>
+                      </strong></h4>
+                  </button>
+                </h2>
+                <div id="accordion<%= index %>" class="accordion-collapse collapse <%= index === 0 ? 'show' : '' %>"
+                  aria-labelledby="accordion<%= index %>-heading" data-bs-parent="#accordion">
+                  <div class="accordion-body">
+                    <%// eventek filterezese az allowedsportok szerint %>
+                      <% const sportEvents=events.filter(event=> event.sport === sport); %>
+                        <% sportEvents.sort((a, b)=> a.date - b.date).forEach(event => { %>
+                          <div class="row p-3 border rounded mb-3">
+                            <div class="col-8">
+
+                              <% // búbánat date megjelenítés %>
+                                <h3><b>
+                                    <%= event.date.toLocaleString('hu-HU', { year: 'numeric' , month: '2-digit' ,
+                                      day: '2-digit' , hour: '2-digit' , minute: '2-digit' }) %>
+                                  </b></h3>
+
+                                <h4>
+                                  <%= event.address %>
+                                </h4>
+
+                                <div class="badge bg-primary p-2">
+                                  <%= event.currentPlayers.length %>/<%= event.maxPlayers %> players
+                                </div>
+                            </div>
+
+                            <div class="col-4 text-center my-auto">
+                              <a href="/events/<%= event._id %>" class="btn btn-primary">Open</a>
+                            </div>
+                          </div>
+                          <% }) %>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <%- include("partials/footer") %>

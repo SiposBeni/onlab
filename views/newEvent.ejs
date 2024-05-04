@@ -1,0 +1,58 @@
+<%- include("partials/head") %>
+<%- include("partials/navbar") %>
+
+<main class="mx-5">
+  <div class="container mt-5">
+    <div class="row">
+      <h1>Create a New Event!</h1>
+    </div>
+    <% if (locals.error) { %>
+      <div class="alert alert-danger">
+        <%= locals.error %>
+      </div>
+      <% } %>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <form action="/event/new" method="POST">
+          <div class="mb-3">
+            <label for="date" class="form-label">Date and Time</label>
+            <input type="datetime-local" class="form-control" id="date" name="date" required>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" required>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="sport" class="form-label">Type of sport</label>
+            <input type="text" class="form-control" id="sport" name="sport" required>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="maxPlayers" class="form-label">Max Players</label>
+            <input type="number" class="form-control" id="maxPlayers" name="maxPlayers" required>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            <small class="form-text text-muted">Optional, but helps players to choose</small>
+          </div>
+          <div class="mb-3">
+            <label for="difficulty" class="form-label">Difficulty</label>
+            <input type="text" class="form-control" id="difficulty" name="difficulty">
+            <small class="form-text text-muted">Optional, but helps players to choose</small>
+          </div>
+          <div class="mb-3">
+            <label for="totalCost" class="form-label">Total cost of event</label>
+            <input type="number" class="form-control" id="totalCost" name="totalCost">
+            <small class="form-text text-muted">Optional, players will have to pay (total cost)/(number of players)</small>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Event</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<%- include("partials/footer") %>

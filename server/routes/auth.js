@@ -1,48 +1,64 @@
 var express = require('express');
-var passport = require('passport');
-var LocalStrategy = require('passport-local');
-var crypto = require('crypto');
-var db = require('../db');
-
+const UserModel = require('../models/user');
 var router = express.Router();
+const bcrypt = require('bcrypt');
 
-// get user by id
-router.get('/user/:id', async (req, res) => {
-    try {
-        const data = await Model.findById(req.params.id);
-        if (!data) {
-            return res.status(404).json({message: "No user found"});
-        }
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+router.get('/login', function (req, res, next) {
+  res.locals.pageTitle = "Login";
+  res.render('login', { error: false });
+});
+
+router.get('/register', function (req, res, next) {
+  res.render('register', { pageTitle: "Register" });
 });
 
 
-passport.use(new LocalStrategy(function verify(username, password, cb) {
-    db.get('SELECT * FROM users WHERE username = ?', [ username ], function(err, row) {
-      if (err) { return cb(err); }
-      if (!row) { return cb(null, false, { message: 'Incorrect username or password.' }); }
-  
-      crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-        if (err) { return cb(err); }
-        if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-          return cb(null, false, { message: 'Incorrect username or password.' });
-        }
-        return cb(null, row);
-      });
-    });
-  }));
 
-router.get('/login', function(req, res, next) {
-  res.render('login');
+router.post('/register', async function (req, res, next) {
+  let name = req.body.username;
+  let password = req.body.password;
+  let passwordAgain = req.body.passwordAgain;
+
+  if (password !== passwordAgain) {
+    return res.render("register", { pageTitle: "Register", error: "Nem egyezik a két jelszó!" });
+  }
+  const hashedPwd = await bcrypt.hash(password, 10);
+  const newUser = new UserModel({
+    name: name,
+    password: hashedPwd
+  });
+
+  try {
+    await newUser.save();
+    return res.redirect("/login");
+  } catch (error) {
+    return res.render("register", { pageTitle: "Register", error: error.message });
+  }
 });
 
 
-router.post('/login/password', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-  }));
+router.post('/login', async function (req, res, next) {
+  const username = req.body.username;
+  const password = req.body.password;
+  const user = await UserModel.findOne({ name: username });
+
+ 
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    res.locals.error = "Invalid username or password.";
+    return res.render("login", { pageTitle: "Login" });
+  }
+
+  req.session.user = {
+    _id: user._id,
+    name: user.name
+  }
+
+  return res.redirect("/");
+});
+
+router.use('/logout', function (req, res, next) {
+  req.session.destroy();
+  return res.redirect('login');
+});
 
 module.exports = router;
