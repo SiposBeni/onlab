@@ -16,6 +16,6 @@ module.exports = async function register(req, res, next) {
       await newUser.save();
       next();
     } catch (error) {
-      res.render("register", { pageTitle: "Register", error: error.message });
+      next(error);
     }
   }

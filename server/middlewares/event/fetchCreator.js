@@ -8,9 +8,9 @@ module.exports = async function fetchCreator(req, res, next) {
     try {
         const creator = await UserModel.findById(req.event.creator);
         if (!creator) {
-            return res.status(404).send("Creator not found");
+            return res.locals.error = "The creator of the event is not on the platform anymore";
         }
-        req.creator = creator;
+        res.locals.creator = creator;
         next();
     } catch (error) {
         next(error);

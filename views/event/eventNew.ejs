@@ -26,7 +26,13 @@
           </div>
           <div class="mb-3">
             <label for="sport" class="form-label">Type of sport</label>
-            <input type="text" class="form-control" id="sport" name="sport" required>
+            <select class="form-select"  id="sport" name="sport" required>
+              <option value="">Default</option>
+              <option>Volleyball</option>
+              <option>Basketball</option>
+              <option>Football</option>
+              <option>Tennis</option>
+            </select>
             <small class="form-text text-muted">Required</small>
           </div>
           <div class="mb-3">
@@ -41,7 +47,13 @@
           </div>
           <div class="mb-3">
             <label for="difficulty" class="form-label">Difficulty</label>
-            <input type="text" class="form-control" id="difficulty" name="difficulty">
+            <select class="form-select" id="difficulty" name="difficulty">
+              <option value="">Default</option>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+              <option>Professional</option>
+            </select>
             <small class="form-text text-muted">Optional, but helps players to choose</small>
           </div>
           <div class="mb-3">

@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,7 +13,7 @@ const authRouter = require('./routes/auth');
 /**
  * Setup mongoose connection
  */
-const uri = "mongodb+srv://webserver:asdf1234@onlab.k1cnug0.mongodb.net/?retryWrites=true&w=majority&appName=Onlab";
+const uri = process.env.MONGODB_URI;
 mongoose.connect(uri)
   .then(() => {
     console.log('Successfully connected to MongoDB.');
@@ -47,3 +48,8 @@ app.use((req, res, next) => {
 
 app.use('/', routes);
 app.use('/', authRouter);
+
+app.use((error, req, res, next) => {
+  console.error(error);
+  res.status(500).send('An unexpected error occurred');
+});

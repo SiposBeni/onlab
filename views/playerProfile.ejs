@@ -1,0 +1,52 @@
+<%- include("partials/head") %>
+    <%- include("partials/navbar") %>
+
+        <div class="container mt-5">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h1><%= player.name %></h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Profile information:</h5>
+                            <p class="ms-3 mt-3"><strong>Name:</strong>
+                                <%= player.name %>
+                            </p>
+                            <p class="ms-3"><strong>Email:</strong>
+                                <%= player.name %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Player Type:</h5>
+                            <!-- pie chart -->
+                            <canvas id="playerChart" width="400" height="400"></canvas>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            const chart = document.getElementById('playerChart');
+            const data = {
+                labels: ['Team player', 'Strategic expert', 'Communicator'],
+                datasets: [{
+                    data: [160, 49, 120],
+                    backgroundColor: ['rgb(54, 162, 235)', 'rgb(75, 192, 192)', 'rgb(153, 102, 255)',],
+                }]
+            };
+            const playerChart = new Chart(chart, { type: 'pie', data: data });
+        </script>
+
+
+        <%- include("partials/footer") %>

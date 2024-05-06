@@ -7,6 +7,13 @@ const fetchEvent = require('../middlewares/event/fetchEvent');
 const fetchCreator = require('../middlewares/event/fetchCreator');
 const setPageTitle = require('../middlewares/setPageTitle');
 const saveEvent = require('../middlewares/event/saveEvent');
+const joinEvent = require('../middlewares/event/joinEvent');
+const leaveEvent = require('../middlewares/event/leaveEvent');
+const checkParticipant = require('../middlewares/event/checkParticipant');
+const getUser = require('../middlewares/user/getUser');
+const deleteUser = require('../middlewares/user/deleteUser');
+const logout = require('../middlewares/user/logout');
+
 const config = require('../config');
 
 /**
@@ -33,10 +40,31 @@ router.post('/event/new', isAuthenticated, setPageTitle("New Event"), saveEvent,
     res.redirect('/event/browse');
 });
 
-
-router.get('/event/:id', isAuthenticated, setPageTitle("Event"), fetchEvent, fetchCreator, (req, res) => {
-    res.render('event/event', { event: req.event, creator: req.creator});
+router.post('/event/:id/join', isAuthenticated, fetchEvent(), checkParticipant, joinEvent, (req, res) => {
+    res.redirect(`/event/${req.params.id}`);
 });
+
+router.post('/event/:id/leave', isAuthenticated, fetchEvent(), checkParticipant, leaveEvent, (req, res) => {
+    res.redirect(`/event/${req.params.id}`);
+});
+
+router.get('/event/:id', isAuthenticated, setPageTitle("Event"), fetchEvent({ populateParticipants: true }), fetchCreator, checkParticipant, (req, res) => {
+    res.render('event/event', {
+        event: req.event,
+        creator: res.locals.creator,
+        participants: req.event.currentPlayers
+    });
+});
+
+router.get('/profile/:id', isAuthenticated, setPageTitle("Player profile"), getUser, (req, res) => {
+    res.render('playerProfile', {
+        player: req.player
+    });
+})
+
+router.post('/deleteUser', isAuthenticated, deleteUser, logout, (req,res) => {
+    res.render('profile');
+})
 
 router.get('/profile', isAuthenticated, setPageTitle("Profile"), (req, res) => {
     res.render('profile');

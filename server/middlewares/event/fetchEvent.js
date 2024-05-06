@@ -1,17 +1,28 @@
 const EventModel = require('../../models/event');
 
 /**
- * Gets event by id
+ * Gets event by id, and if needed, also the participants id and name
  */
-module.exports = async function fetchEvent(req, res, next) {
-    try {
-        const event = await EventModel.findById(req.params.id);
-        if (!event) {
-            return res.status(404).send("Event not found");
+module.exports = function fetchEvent(options = {}) {
+    return async (req, res, next) => {
+        try {
+            let query = EventModel.findById(req.params.id);
+            if (options.populateParticipants) {
+                query = query.populate({
+                    path: 'currentPlayers',
+                    select: 'name _id'
+                });
+            }
+
+            const event = await query;
+            if (!event) {
+                return res.locals.error = "Event not found";
+            }
+
+            req.event = event;
+            next();
+        } catch (error) {
+            next(error);
         }
-        req.event = event;
-        next();
-    } catch (error) {
-        next(error);
-    }
-}
+    };
+};

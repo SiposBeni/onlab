@@ -15,7 +15,7 @@ const EventSchema = new mongoose.Schema({
       message: '{VALUE} is not a valid sport (volleyball, football, basketball, tennis)'}
      },
   maxPlayers: { type: Number, required: true },
-  currentPlayers: { type: [String] },
+  currentPlayers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   description: { type: String, required: false },
   difficulty: { type: String, required: false },
   totalCost: { type: Number, required: false },

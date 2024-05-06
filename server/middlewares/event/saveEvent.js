@@ -1,5 +1,8 @@
 const EventModel = require('../../models/event');
 
+/**
+ * Creates and saves the new event
+ */
 module.exports = async function saveEvent(req, res, next) {
     const { date, address, sport, maxPlayers, description, difficulty, totalCost } = req.body;
     const newEvent = new EventModel({
