@@ -22,8 +22,10 @@
               <p class="ms-3"><strong>Email:</strong>
                 <%= user.name %>
               </p>
-              <p class="ms-3"><strong>Password:</strong>
-                <a href="/changePassword">Change your password</a>
+              <p class="ms-3 my-auto"><strong>Password:</strong>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#passwordChangeModal">
+                  Change your password
+                </button>
               </p>
             </div>
             <div class="card-footer text-end">
@@ -43,42 +45,43 @@
               <div id="playerData" data-teamPlayer="<%= user.commendations.teamPlayer %>"
                 data-strategicExpert="<%= user.commendations.strategicExpert %>"
                 data-communicator="<%= user.commendations.communicator %>">
-            </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <%- include("modals/deleteUserModal") %>
-      <%- include("partials/footer") %>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <%- include("modals/changePasswordModal") %>
+        <%- include("partials/footer") %>
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script>
-          const chart = document.getElementById('playerChart');
+          <script>
+            const chart = document.getElementById('playerChart');
 
-          const playerData = document.getElementById('playerData');
-          const teamPlayer = parseInt(playerData.getAttribute('data-teamPlayer'), 10);
-          const strategicExpert = parseInt(playerData.getAttribute('data-strategicExpert'), 10);
-          const communicator = parseInt(playerData.getAttribute('data-communicator'), 10);
+            const playerData = document.getElementById('playerData');
+            const teamPlayer = parseInt(playerData.getAttribute('data-teamPlayer'), 10);
+            const strategicExpert = parseInt(playerData.getAttribute('data-strategicExpert'), 10);
+            const communicator = parseInt(playerData.getAttribute('data-communicator'), 10);
 
-          const data = {
+            const data = {
               labels: [
-                  'Team player',
-                  'Strategic expert',
-                  'Communicator'
+                'Team player',
+                'Strategic expert',
+                'Communicator'
               ],
               datasets: [{
-                  data: [
-                      teamPlayer,
-                      strategicExpert,
-                      communicator
-                  ],
-                  backgroundColor: [
-                      'rgb(54, 162, 235)',
-                      'rgb(75, 192, 192)',
-                      'rgb(153, 102, 255)',
-                  ],
+                data: [
+                  teamPlayer,
+                  strategicExpert,
+                  communicator
+                ],
+                backgroundColor: [
+                  'rgb(54, 162, 235)',
+                  'rgb(75, 192, 192)',
+                  'rgb(153, 102, 255)',
+                ],
               }]
-          };
-          const playerChart = new Chart(chart, { type: 'pie', data: data });
-      </script>
+            };
+            const playerChart = new Chart(chart, { type: 'pie', data: data });
+          </script>

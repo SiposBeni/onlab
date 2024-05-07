@@ -15,6 +15,8 @@ const getUser = require('../middlewares/user/getUser');
 const deleteUser = require('../middlewares/user/deleteUser');
 const logout = require('../middlewares/user/logout');
 const addCommendation = require('../middlewares/user/addCommendation');
+const changePassword = require('../middlewares/user/changePassword');
+
 
 const config = require('../config');
 
@@ -23,15 +25,15 @@ const config = require('../config');
  */
 
 router.get('/event/own', isAuthenticated, setPageTitle("My events"), getMyEvents, (req, res) => {
-    const upcomingEvents =  req.upcomingEvents;
-    const archivedEvents =  req.archivedEvents;
+    const upcomingEvents = req.upcomingEvents;
+    const archivedEvents = req.archivedEvents;
     console.log(archivedEvents);
     res.render('event/eventOwn', { upcomingEvents, archivedEvents });
 })
 
 router.get('/event/browse', isAuthenticated, setPageTitle("Browse"), async (req, res) => {
     const now = new Date();
-    const events = await EventModel.find({date: {$gt: now}});
+    const events = await EventModel.find({ date: { $gt: now } });
     res.render('event/browse', { allowedSports: config.allowedSports, events });
 });
 
@@ -59,6 +61,14 @@ router.get('/event/:id', isAuthenticated, setPageTitle("Event"), fetchEvent({ po
     });
 });
 
+router.post('/changePassword', isAuthenticated, setPageTitle("Profile"), changePassword, function (req, res) {
+    if (res.locals.error) {
+        res.render('profile', { error: res.locals.error, showModal: true  });
+    } else {
+        res.render('profile', { success: "Password successfuly changed.", showModal: true  });
+    }
+});
+
 router.post('/profile/:id/commend', isAuthenticated, setPageTitle("Player profile"), getUser, addCommendation, (req, res) => {
     res.redirect(`/profile/${req.params.id}`);
 })
@@ -73,7 +83,7 @@ router.get('/profile', isAuthenticated, setPageTitle("Profile"), (req, res) => {
     res.render('profile');
 })
 
-router.post('/deleteUser', isAuthenticated, deleteUser, logout, (req,res) => {
+router.post('/deleteUser', isAuthenticated, deleteUser, logout, (req, res) => {
     res.render('profile');
 })
 
