@@ -9,6 +9,7 @@ const setPageTitle = require('../middlewares/setPageTitle');
 const saveEvent = require('../middlewares/event/saveEvent');
 const joinEvent = require('../middlewares/event/joinEvent');
 const leaveEvent = require('../middlewares/event/leaveEvent');
+const getMyEvents = require('../middlewares/event/getMyEvents');
 const checkParticipant = require('../middlewares/event/checkParticipant');
 const getUser = require('../middlewares/user/getUser');
 const deleteUser = require('../middlewares/user/deleteUser');
@@ -20,16 +21,17 @@ const config = require('../config');
 /**
  * Main routes
  */
-router.get('/', isAuthenticated, setPageTitle("Home"), (req, res) => {
-    res.render("home");
-});
 
-router.get('/event/own', isAuthenticated, setPageTitle("My events"), (req, res) => {
-    res.render('event/eventOwn');
+router.get('/event/own', isAuthenticated, setPageTitle("My events"), getMyEvents, (req, res) => {
+    const upcomingEvents =  req.upcomingEvents;
+    const archivedEvents =  req.archivedEvents;
+    console.log(archivedEvents);
+    res.render('event/eventOwn', { upcomingEvents, archivedEvents });
 })
 
 router.get('/event/browse', isAuthenticated, setPageTitle("Browse"), async (req, res) => {
-    const events = await EventModel.find({});
+    const now = new Date();
+    const events = await EventModel.find({date: {$gt: now}});
     res.render('event/browse', { allowedSports: config.allowedSports, events });
 });
 
@@ -74,5 +76,9 @@ router.get('/profile', isAuthenticated, setPageTitle("Profile"), (req, res) => {
 router.post('/deleteUser', isAuthenticated, deleteUser, logout, (req,res) => {
     res.render('profile');
 })
+
+router.get('/', isAuthenticated, setPageTitle("Home"), (req, res) => {
+    res.render("home");
+});
 
 module.exports = router;

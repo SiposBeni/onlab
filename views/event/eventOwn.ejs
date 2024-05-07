@@ -1,147 +1,82 @@
 <%- include("../partials/head") %>
   <%- include("../partials/navbar") %>
-    <div class="container mt-5">
-      <div class="row">
-        <h1> Own events</h1>
-      </div>
-      <div class="row mt-4">
-                                                                        <%# STILL STATIC %>
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-          <%# volleyball %>
+    <main class="mx-5">
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-9">
+            <h1>Your Events</h1>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="accordion" id="accordion">
+            <!-- Upcoming Events -->
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                  aria-controls="panelsStayOpen-collapseOne">
-                  <h4><strong>Upcoming</strong></h4>
+                  data-bs-target="#upcomingEvents" aria-expanded="true" aria-controls="upcomingEvents">
+                  <h4><strong>Upcoming Events</strong></h4>
                 </button>
               </h2>
-              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-                <%# single event start %>
-                  <div class="accordion-body container">
-
-                    <div class="row">
-                      <div class="p-3 border rounded container">
-
-                        <div class="row">
-                          <h3 class="col-8">
-                            <b>2024-04-21 18:00</b>
-                          </h3>
-
+              <div id="upcomingEvents" class="accordion-collapse collapse show" aria-labelledby="headingUpcoming"
+                data-bs-parent="#accordion">
+                <div class="accordion-body">
+                  <% upcomingEvents.forEach(event=> { %>
+                    <div class="row p-3 border rounded mb-3">
+                      <div class="col-8">
+                        <h3><b>
+                            <%= event.date.toLocaleString('hu-HU', { year: 'numeric' , month: '2-digit' , day: '2-digit'
+                              , hour: '2-digit' , minute: '2-digit' }) %>
+                          </b></h3>
+                        <h4>
+                          <%= event.address %>
+                        </h4>
+                        <div class="badge bg-primary p-2">
+                          <%= event.currentPlayers.length %>/<%= event.maxPlayers %> players
                         </div>
-
-                        <div class="row">
-                          <h4 class="col-8">
-                            BME sportközpont
-                          </h4>
-                          <div class="col-4 text-center">
-                            <a href="/events/1" class="btn btn-primary">
-                              Open
-                            </a>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <span class="col-8 ms-2">
-                            Volleyball
-                          </span>
-                        </div>
-
-
+                      </div>
+                      <div class="col-4 text-center my-auto">
+                        <a href="/event/<%= event._id %>" class="btn btn-primary">Open</a>
                       </div>
                     </div>
-                  </div>
-                  <%# single event end %>
-                    <%# single event start %>
-                      <div class="accordion-body container">
-                        <div class="row">
-                          <div class="p-3 border rounded container">
-
-                            <div class="row">
-                              <h3 class="col-8">
-                                <b>2024-04-22 16:00</b>
-                              </h3>
-
-                            </div>
-
-                            <div class="row">
-                              <h4 class="col-8">
-                                BME sportközpont
-                              </h4>
-                              <div class="col-4 text-center">
-                                <a class="btn btn-primary">
-                                  Open
-                                </a>
-                              </div>
-                            </div>
-
-
-                            <div class="row">
-                              <span class="col-8 ms-2">
-                                Basketball
-                              </span>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      <%# single event end %>
-              </div>
-            </div>
-
-            <%# archive %>
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseTwo">
-                    <h4><strong>Archive</strong></h4>
-                  </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-                  <div class="accordion-body">
-                    <%# archive events %>
-                      <%# single event start %>
-                        <div class="accordion-body container">
-
-                          <div class="row">
-                            <div class="p-3 border rounded container">
-
-                              <div class="row">
-                                <h3 class="col-8">
-                                  <b>2024-04-21 18:00</b>
-                                </h3>
-
-                              </div>
-
-                              <div class="row">
-                                <h4 class="col-8">
-                                  BME sportközpont
-                                </h4>
-                                <div class="col-4 text-center">
-                                  <button href="#" class="btn btn-primary" disabled>
-                                    Open
-                                  </button>
-                                </div>
-                              </div>
-
-                              <div class="row">
-                                <span class="col-8 ms-2">
-                                  Volleyball
-                                </span>
-                              </div>
-
-
-                            </div>
-                          </div>
-                        </div>
-                        <%# single event end %>
-                  </div>
+                    <% }); %>
                 </div>
               </div>
+            </div>
+            <!-- Archived Events -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#archivedEvents" aria-expanded="false" aria-controls="archivedEvents">
+                  <h4><strong>Archived Events</strong></h4>
+                </button>
+              </h2>
+              <div id="archivedEvents" class="accordion-collapse collapse" aria-labelledby="headingArchived"
+                data-bs-parent="#accordion">
+                <div class="accordion-body">
+                  <% archivedEvents.forEach(event=> { %>
+                    <div class="row p-3 border rounded mb-3">
+                      <div class="col-8">
+                        <h3><b>
+                            <%= event.date.toLocaleString('hu-HU', { year: 'numeric' , month: '2-digit' , day: '2-digit'
+                              , hour: '2-digit' , minute: '2-digit' }) %>
+                          </b></h3>
+                        <h4>
+                          <%= event.address %>
+                        </h4>
+                        <div class="badge bg-primary p-2">
+                          <%= event.currentPlayers.length %>/<%= event.maxPlayers %> players
+                        </div>
+                      </div>
+                      <div class="col-4 text-center my-auto">
+                        <button class="btn btn-primary" disabled>Open</button>
+                      </div>
+                    </div>
+                    <% }); %>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    </div>
+    </main>
     <%- include("../partials/footer") %>
