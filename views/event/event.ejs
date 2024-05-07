@@ -42,7 +42,7 @@
                 </p>
                 <form action="<%=event._id%>/<%= locals.isParticipant ? "leave" : "join" %>" class="d-flex justify-content-end" method="post">
                   <input type="hidden" name="id" value=<%=event._id%>/>
-                  <input type="submit" class="btn btn-<%=locals.isParticipant ? "danger" : "primary" %>" value= "<%=locals.isParticipant ? "Leave the event" : "Join the event" %>" <%= event.currentPlayers.length >= event.maxPlayers ? "disabled" : '' %> />
+                  <input type="submit" class="btn btn-<%=locals.isParticipant ? "danger" : "primary" %>" value= "<%=locals.isParticipant ? "Leave the event" : "Join the event" %>" <%= event.currentPlayers.length >= event.maxPlayers && !locals.isParticipant ? "disabled" : '' %> />
                 </form>
               </div>
             </div>

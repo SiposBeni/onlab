@@ -14,7 +14,8 @@ module.exports = async function login(req, res, next) {
     }
     req.user = {
         _id: user._id,
-        name: user.name
+        name: user.name,
+        commendations: user.commendations
     }
     next();
 }

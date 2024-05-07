@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
 
 /**
  * User model
@@ -7,6 +6,12 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
   name: String,
   password: String,
+  commendations: {
+    teamPlayer: { type: Number, default: 0 },
+    strategicExpert: { type: Number, default: 0 },
+    communicator: { type: Number, default: 0 },
+  },
+  commendationsGiven: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Commendation', default: [] }]
 });
 
 

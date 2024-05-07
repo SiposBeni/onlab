@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <!-- Participant names -->
                 <% participants.forEach(player=> { %>
-                    <a class="row m-3" href="../profile/<%= player._id %>" target="_blank">
+                    <a class="row m-3" href="../profile/<%= player._id %>">
                         <%= player.name %>
                     </a>
                     <% }); %>

@@ -13,6 +13,7 @@ const checkParticipant = require('../middlewares/event/checkParticipant');
 const getUser = require('../middlewares/user/getUser');
 const deleteUser = require('../middlewares/user/deleteUser');
 const logout = require('../middlewares/user/logout');
+const addCommendation = require('../middlewares/user/addCommendation');
 
 const config = require('../config');
 
@@ -56,17 +57,21 @@ router.get('/event/:id', isAuthenticated, setPageTitle("Event"), fetchEvent({ po
     });
 });
 
+router.post('/profile/:id/commend', isAuthenticated, setPageTitle("Player profile"), getUser, addCommendation, (req, res) => {
+    res.redirect(`/profile/${req.params.id}`);
+})
+
 router.get('/profile/:id', isAuthenticated, setPageTitle("Player profile"), getUser, (req, res) => {
     res.render('playerProfile', {
         player: req.player
     });
 })
 
-router.post('/deleteUser', isAuthenticated, deleteUser, logout, (req,res) => {
+router.get('/profile', isAuthenticated, setPageTitle("Profile"), (req, res) => {
     res.render('profile');
 })
 
-router.get('/profile', isAuthenticated, setPageTitle("Profile"), (req, res) => {
+router.post('/deleteUser', isAuthenticated, deleteUser, logout, (req,res) => {
     res.render('profile');
 })
 

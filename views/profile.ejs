@@ -40,6 +40,10 @@
               <h5 class="card-title">Player Type:</h5>
               <!-- pie chart -->
               <canvas id="playerChart" width="400" height="400"></canvas>
+              <div id="playerData" data-teamPlayer="<%= user.commendations.teamPlayer %>"
+                data-strategicExpert="<%= user.commendations.strategicExpert %>"
+                data-communicator="<%= user.commendations.communicator %>">
+            </div>
             </div>
           </div>
         </div>
@@ -51,12 +55,30 @@
 
         <script>
           const chart = document.getElementById('playerChart');
+
+          const playerData = document.getElementById('playerData');
+          const teamPlayer = parseInt(playerData.getAttribute('data-teamPlayer'), 10);
+          const strategicExpert = parseInt(playerData.getAttribute('data-strategicExpert'), 10);
+          const communicator = parseInt(playerData.getAttribute('data-communicator'), 10);
+
           const data = {
-            labels: ['Team player', 'Strategic expert', 'Communicator'],
-            datasets: [{
-              data: [160, 49, 120],
-              backgroundColor: ['rgb(54, 162, 235)', 'rgb(75, 192, 192)', 'rgb(153, 102, 255)',],
-            }]
+              labels: [
+                  'Team player',
+                  'Strategic expert',
+                  'Communicator'
+              ],
+              datasets: [{
+                  data: [
+                      teamPlayer,
+                      strategicExpert,
+                      communicator
+                  ],
+                  backgroundColor: [
+                      'rgb(54, 162, 235)',
+                      'rgb(75, 192, 192)',
+                      'rgb(153, 102, 255)',
+                  ],
+              }]
           };
           const playerChart = new Chart(chart, { type: 'pie', data: data });
-        </script>
+      </script>
