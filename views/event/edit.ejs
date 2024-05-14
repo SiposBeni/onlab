@@ -1,0 +1,72 @@
+<%- include("../partials/head") %>
+<%- include("../partials/navbar") %>
+
+<main class="mx-5">
+  <div class="container mt-5">
+    <div class="row">
+      <h1>Create a New Event!<%= event.date.toLocaleString('hu-HU', { year: 'numeric' , month: '2-digit' , day: '2-digit' ,hour: '2-digit' , minute: '2-digit' }).replace(/\. /g, '-')%></h1>
+    </div>
+    <% if (locals.error) { %>
+      <div class="alert alert-danger">
+        <%= locals.error %>
+      </div>
+      <% } %>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <form action="/event/save" method="POST">
+          <input type="hidden" value="<%=locals.event._id%>" name="eventId">
+          <div class="mb-3">
+            <label for="date" class="form-label">Date and Time</label>
+            <%=formattedDate%>
+            <input type="datetime-local" min="<%=Date.now()%>" class="form-control" id="date" name="date" value="<%=formattedDate%>" required>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" value="<%= event.address %>" required>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="sport" class="form-label">Type of sport</label>
+            <select class="form-select"  id="sport" name="sport" value="<%=event.sport%>" required>
+              <option value="">Default</option>
+              <option <%= event.sport == 'volleyball' ? 'selected' : '' %>>Volleyball</option>
+              <option <%= event.sport == 'basketball' ? 'selected' : '' %> >Basketball</option>
+              <option <%= event.sport == 'football' ? 'selected' : '' %> >Football</option>
+              <option <%= event.sport == 'tennis' ? 'selected' : '' %> >Tennis</option>
+            </select>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="maxPlayers" class="form-label">Max Players</label>
+            <input type="number" class="form-control" id="maxPlayers" name="maxPlayers" value="<%= event.maxPlayers ? event.maxPlayers : '' %>" required>
+            <small class="form-text text-muted">Required</small>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3"><%= event.description ? event.description : '' %></textarea>
+            <small class="form-text text-muted">Optional, but helps players to choose</small>
+          </div>
+          <div class="mb-3">
+            <label for="difficulty" class="form-label">Difficulty</label>
+            <select class="form-select" id="difficulty" name="difficulty">
+              <option value="">Default</option>
+              <option <%= event.difficulty == 'Beginner' ? 'selected' : '' %> >Beginner</option>
+              <option <%= event.difficulty == 'Intermediate' ? 'selected' : '' %> >Intermediate</option>
+              <option <%= event.difficulty == 'Advanced' ? 'selected' : '' %> >Advanced</option>
+              <option <%= event.difficulty == 'Professional' ? 'selected' : '' %> >Professional</option>
+            </select>
+            <small class="form-text text-muted">Optional, but helps players to choose</small>
+          </div>
+          <div class="mb-3">
+            <label for="totalCost" class="form-label">Total cost of event</label>
+            <input type="number" class="form-control" id="totalCost" name="totalCost" value="<%= event.totalCost ? event.totalCost : '' %>" >
+            <small class="form-text text-muted">Optional, players will have to pay (total cost)/(number of players)</small>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Event</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<%- include("../partials/footer") %>

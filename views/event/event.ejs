@@ -1,56 +1,69 @@
 <%- include("../partials/head") %>
   <%- include("../partials/navbar") %>
-
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
     <main class="mx-5">
       <div class="container mt-5">
         <div class="row">
-          <h1>Event by <%= locals.creator.name %>
-          </h1>
+          <h1>
+            Event by <%= locals.creator.name %>
+              <% if( locals.creator._id == user._id ){ %>
+                <a href="<%= event._id %>/edit">
+                  <span class="material-symbols-outlined">
+                    edit
+                    </span>
+                </a>
+                <% } %>
         </div>
+        </h1>
         <% if (locals.error) { %>
           <div class="alert alert-danger">
-              <%= locals.error %>
+            <%= locals.error %>
           </div>
-      <% } %>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <h2 class="card-title">
-                  <% // Uppercase first letter for the sport %>
-                    <%= event.sport.charAt(0).toUpperCase() + event.sport.slice(1) %>
-                </h2>
-                <div class="d-flex justify-content-between">
-                  <h5>
-                    <%= event.date.toLocaleString('hu-HU', { year: 'numeric' , month: '2-digit' , day: '2-digit' ,
-                      hour: '2-digit' , minute: '2-digit' }) %>
-                  </h5>
-                  <a type="button" data-bs-toggle="modal" data-bs-target="#participantsModal"
-                    class="badge bg-primary p-2">
-                    <%= event.currentPlayers.length %>/<%= event.maxPlayers %> players
-                  </a>
+          <% } %>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h2 class="card-title">
+                      <% // Uppercase first letter for the sport %>
+                        <%= event.sport.charAt(0).toUpperCase() + event.sport.slice(1) %>
+                    </h2>
+                    <div class="d-flex justify-content-between">
+                      <h5>
+                        <%= event.date.toLocaleString('hu-HU', { year: 'numeric' , month: '2-digit' , day: '2-digit' ,
+                          hour: '2-digit' , minute: '2-digit' }) %>
+                      </h5>
+                      <a type="button" data-bs-toggle="modal" data-bs-target="#participantsModal"
+                        class="badge bg-primary p-2">
+                        <%= event.currentPlayers.length %>/<%= event.maxPlayers %> players
+                      </a>
+                    </div>
+                    <p class="fw-bold">
+                      <%= event.address %>
+                    </p>
+                    <p>
+                      <%= event.description %><br>
+                        Difficulty: <%= event.difficulty %><br>
+                          Cost: <%= event.totalCost %> HUF (<%= Math.round(event.totalCost / event.maxPlayers) %> HUF /
+                              player,
+                              currently <%= event.currentPlayers.length %> players)
+                    </p>
+                    <form action="<%=event._id%>/<%= locals.isParticipant ? "leave" : "join" %>" class="d-flex
+                      justify-content-end" method="post">
+                      <input type="hidden" name="id" value=<%=event._id%>/>
+                      <input type="submit" class="btn btn-<%=locals.isParticipant ? "danger" : "primary" %>" value= "<%=locals.isParticipant ? "Leave the event" : "Join the event" %>" <%=
+                          event.currentPlayers.length>= event.maxPlayers && !locals.isParticipant ? "disabled" : '' %>
+                          />
+                    </form>
+                  </div>
                 </div>
-                <p class="fw-bold">
-                  <%= event.address %>
-                </p>
-                <p>
-                  <%= event.description %><br>
-                    Difficulty: <%= event.difficulty %><br>
-                      Cost: <%= event.totalCost %> HUF (<%= Math.round(event.totalCost / event.maxPlayers) %> HUF /
-                          player,
-                          currently <%= event.currentPlayers.length %> players)
-                </p>
-                <form action="<%=event._id%>/<%= locals.isParticipant ? "leave" : "join" %>" class="d-flex justify-content-end" method="post">
-                  <input type="hidden" name="id" value=<%=event._id%>/>
-                  <input type="submit" class="btn btn-<%=locals.isParticipant ? "danger" : "primary" %>" value= "<%=locals.isParticipant ? "Leave the event" : "Join the event" %>" <%= event.currentPlayers.length >= event.maxPlayers && !locals.isParticipant ? "disabled" : '' %> />
-                </form>
               </div>
             </div>
-          </div>
-        </div>
       </div>
     </main>
 
-    
+
     <%- include("../modals/participantsModal") %>
-    <%- include("../partials/footer") %>
+      <%- include("../partials/footer") %>

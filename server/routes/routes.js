@@ -7,6 +7,7 @@ const fetchEvent = require('../middlewares/event/fetchEvent');
 const fetchCreator = require('../middlewares/event/fetchCreator');
 const setPageTitle = require('../middlewares/setPageTitle');
 const saveEvent = require('../middlewares/event/saveEvent');
+const createEvent = require('../middlewares/event/createEvent');
 const joinEvent = require('../middlewares/event/joinEvent');
 const leaveEvent = require('../middlewares/event/leaveEvent');
 const getMyEvents = require('../middlewares/event/getMyEvents');
@@ -27,7 +28,7 @@ const config = require('../config');
 router.get('/event/own', isAuthenticated, setPageTitle("My events"), getMyEvents, (req, res) => {
     const upcomingEvents = req.upcomingEvents;
     const archivedEvents = req.archivedEvents;
-    console.log(archivedEvents);
+    // console.log(archivedEvents);
     res.render('event/eventOwn', { upcomingEvents, archivedEvents });
 })
 
@@ -41,8 +42,26 @@ router.get('/event/new', isAuthenticated, setPageTitle("New Event"), (req, res) 
     res.render('event/eventNew');
 });
 
-router.post('/event/new', isAuthenticated, setPageTitle("New Event"), saveEvent, (req, res) => {
+router.get('/event/:id/edit', isAuthenticated, setPageTitle("Edit Event"), fetchEvent({ populateParticipants: true }), fetchCreator, checkParticipant, (req, res) => {
+    if(res.locals.creator._id == res.locals.user._id){
+        const formattedDate = new Date(req.event.date.getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19);
+
+        return res.render('event/edit', {
+            event: req.event,
+            creator: res.locals.creator,
+            participants: req.event.currentPlayers,
+            formattedDate: formattedDate
+        });
+    }
+    res.redirect(`/event/${req.params.id}`);
+});
+
+router.post('/event/new', isAuthenticated, setPageTitle("New Event"), createEvent, (req, res) => {
     res.redirect('/event/browse');
+});
+
+router.post('/event/save', isAuthenticated, setPageTitle("Save Event"), saveEvent, (req, res) => {
+    res.redirect(`/event/${req.event._id}`);
 });
 
 router.post('/event/:id/join', isAuthenticated, fetchEvent(), checkParticipant, joinEvent, (req, res) => {
@@ -74,8 +93,10 @@ router.post('/profile/:id/commend', isAuthenticated, setPageTitle("Player profil
 })
 
 router.get('/profile/:id', isAuthenticated, setPageTitle("Player profile"), getUser, (req, res) => {
+    console.log(req.recentCommendations);
     res.render('playerProfile', {
-        player: req.player
+        player: req.player,
+        recentCommendations: req.recentCommendations
     });
 })
 

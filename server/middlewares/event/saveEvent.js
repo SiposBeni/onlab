@@ -1,24 +1,24 @@
 const EventModel = require('../../models/event');
 
 /**
- * Creates and saves the new event
+ * Saves the changes
  */
 module.exports = async function saveEvent(req, res, next) {
-    const { date, address, sport, maxPlayers, description, difficulty, totalCost } = req.body;
-    const newEvent = new EventModel({
-        date: date,
-        address: address,
-        sport: sport.toLowerCase(),
-        maxPlayers: maxPlayers,
-        description: description,
-        difficulty: difficulty,
-        totalCost: totalCost,
-        creator: req.user._id 
-    });
+    const { date, address, sport, maxPlayers, description, difficulty, totalCost, eventId } = req.body;
+
 
     try {
-        await newEvent.save();
-        req.newEvent = newEvent; 
+        const event = await EventModel.findById(eventId);
+        event.date = date;
+        event.address = address;
+        event.sport = sport.toLowerCase();
+        event.maxPlayers = maxPlayers;
+        event.description = description;
+        event.difficulty = difficulty;
+        event.totalCost = totalCost;
+
+        await event.save();
+        req.event = event; 
         next();
     } catch (error) {
         next(error);

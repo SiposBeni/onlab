@@ -18,7 +18,7 @@
                                 <%= player.name %>
                             </p>
                             <p class="ms-3"><strong>Email:</strong>
-                                <%= player.name %>
+                                <%= player.email %>
                             </p>
                         </div>
                     </div>
@@ -30,11 +30,11 @@
                             <h5 class="card-title">Player Type:</h5>
                             <form class="text-center" action="<%= player._id %>/commend" method="post" <%= player._id == user._id ? 'hidden' : ''%>  >
                                 <button class="btn btn-primary" name="commendation" value="teamPlayer"
-                                    type="submit" <%= typeof disableButtons !== 'undefined' ? 'disabled' : '' %> >Team player</button>
+                                    type="submit" <%= recentCommendations.length > 0 ? 'disabled' : '' %> >Team player</button>
                                 <button class="btn btn-primary" name="commendation" value="strategicExpert"
-                                    type="submit" <%= typeof disableButtons !== 'undefined' ? 'disabled' : '' %> >Strategic expert</button>
+                                    type="submit" <%= recentCommendations.length > 0 ? 'disabled' : '' %> >Strategic expert</button>
                                 <button class="btn btn-primary" name="commendation" value="communicator"
-                                    type="submit" <%= typeof disableButtons !== 'undefined' ? 'disabled' : '' %> >Communicator</button>
+                                    type="submit" <%= recentCommendations.length > 0 ? 'disabled' : '' %> >Communicator</button>
                             </form>
                             <!-- pie chart -->
                             <canvas id="playerChart" width="400" height="400"></canvas>
